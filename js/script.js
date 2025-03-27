@@ -43,23 +43,26 @@ setTimeout(() => {
     answersForm.classList.add(`d-block`);
 }, 31 * msPerSecond);
 
+// Imposto il comportamento del bottone al click
 btn.addEventListener(`click`, (e) => {
-    e.preventDefault();
-    let founded = 0;
-    for (let i = 0; i < numbers.length; i++){
-        let numbersValue = parseInt(numbers[i].value);
-        console.log(`posizione ${i} di numbers: ${numbersValue}`)
-        for (let j = 0; j<numsGenerated.length; j++){
-            console.log(`posizione ${j} di numsGenerated: ${numsGenerated[j]}`)
-            if (numbersValue === numsGenerated[j]){
-                founded++;
+    e.preventDefault(); // Evito che la pagina si racarichi
+    let founded = 0; // Definisco una variabile che uso come contatore dei numeri trovati
+    for (let i = 0; i < numbers.length; i++){ // Primo ciclo per scorrere l'array di numeri inseriti dall'utente
+        let numbersValue = parseInt(numbers[i].value); // Per comodità definsco una variabile che mi contiene il valore di numbers[i] in formato numerico
+        for (let j = 0; j<numsGenerated.length; j++){ // Secondo cilco per scorrere l'array di numeri generati casualmente
+            if (numbersValue === numsGenerated[j]){ // Verifico se sono uguali
+                founded++; // Se sono uguali incremento di 1 founded
             }
         }
     }
 
-    if (founded >= 3){
+    if (founded >= 3){ // Blocco condizionale per vedere quanti numeri sono stati indovinati
+        finalMessage.classList.remove(`text-danger`);
+        finalMessage.classList.add(`text-success`);
         finalMessage.innerHTML = `Hai vinto <br> Hai indovinato ${founded} numeri`
     } else {
+        finalMessage.classList.add(`text-danger`);
+        finalMessage.classList.remove(`text-success`);
         finalMessage.innerHTML = `Hai perso <br> Hai indovinato ${founded} numeri`
     }
     
