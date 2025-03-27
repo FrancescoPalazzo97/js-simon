@@ -1,5 +1,7 @@
 // Functions
-const randomNumber = () => Math.floor(Math.random() * 50 + 1) // Genera un numero casuale compreso tra 1 e 50
+const randomNumber = () => parseInt(Math.floor(Math.random() * 50 + 1)) // Genera un numero casuale compreso tra 1 e 50
+
+const findDuplicate = (arr, n) => n === arr; // Funzione che mi restituisce un valore booelano
 
 const checkValue = (bool, element, n) =>{ // Funzione che mi stampa il risultato
     if (bool){ // Se un qualche valore non è valido
@@ -29,6 +31,8 @@ let answersForm = document.getElementById(`answers-form`); // Recupero l'element
 let numbers = document.querySelectorAll(`input`); // Recupero gli input del form
 let btn = document.querySelector(`button`); // Reecupero il bottone
 let finalMessage = document.getElementById(`message`); // Recupero l'lemento message
+let duplicate = false;
+
 
 const msPerSecond = 1000;
 
@@ -39,8 +43,17 @@ let numsGenerated = []; // Creo un array dove metto i numeri generati
 // Genero i numeri casuali
 for (let i = 0; i < 5; i++){
     let n = randomNumber(); // Richiamo la funzione e inserisco il valore ritornato nella variabile n
-    numbersList.innerHTML += `<li>${n}</li>`; // Inserisco il numero generato contenuto in un tag <li> nella lista
-    numsGenerated.push(n); // Pusho il numero nell'array
+    for (let j = 0; j < numsGenerated.length && !duplicate; j++){ // Verifico che il valore in n non sia già presente nell'array
+        duplicate = findDuplicate(numsGenerated[j], n); // Richiamo la funzione e assegno il valore booleano che ritorna alla variabile duplicate
+    }
+    if (duplicate){ // Se presente un duplicato
+        i--; //decremento l'indice
+        duplicate = false; // Faccio tornare la variabile a false
+    } else { // Altrimenti se non viene trovato nessun duplicato
+        numbersList.innerHTML += `<li>${n}</li>`; // Inserisco il numero generato contenuto in un tag <li> nella lista
+        numsGenerated.push(n); // Pusho il numero nell'array
+    }
+    
 }
 
 const time = setInterval(function(){ // Creo un intervallo di 1 secondo
