@@ -47,24 +47,32 @@ setTimeout(() => {
 btn.addEventListener(`click`, (e) => {
     e.preventDefault(); // Evito che la pagina si racarichi
     let founded = 0; // Definisco una variabile che uso come contatore dei numeri trovati
+    let check = false; // Dichiaro un varibile da usare come controllo del valore inserito dall'utente
     for (let i = 0; i < numbers.length; i++){ // Primo ciclo per scorrere l'array di numeri inseriti dall'utente
         let numbersValue = parseInt(numbers[i].value); // Per comodità definsco una variabile che mi contiene il valore di numbers[i] in formato numerico
-        for (let j = 0; j<numsGenerated.length; j++){ // Secondo cilco per scorrere l'array di numeri generati casualmente
-            if (numbersValue === numsGenerated[j]){ // Verifico se sono uguali
-                founded++; // Se sono uguali incremento di 1 founded
+        if (isNaN(numbersValue)){ // Blocco condizionale per verificare se il valore inserito sia un numero oppure no
+            check = true;
+        } else {
+            for (let j = 0; j<numsGenerated.length; j++){ // Secondo cilco per scorrere l'array di numeri generati casualmente
+                if (numbersValue === numsGenerated[j]){ // Verifico se sono uguali
+                    founded++; // Se sono uguali incremento di 1 founded
+                }
             }
         }
+        
     }
-
-    if (founded >= 3){ // Blocco condizionale per vedere quanti numeri sono stati indovinati
-        finalMessage.classList.remove(`text-danger`);
-        finalMessage.classList.add(`text-success`);
-        finalMessage.innerHTML = `Hai vinto <br> Hai indovinato ${founded} numeri`
-    } else {
-        finalMessage.classList.add(`text-danger`);
-        finalMessage.classList.remove(`text-success`);
-        finalMessage.innerHTML = `Hai perso <br> Hai indovinato ${founded} numeri`
-    }
-    
+    if (check){ // Se in valore inserito non è un numero
+        alert(`Valore inserito non valido!`); // Compare il seguente messaggio
+    } else { // Altrimenti
+        if (founded >= 3){ // Blocco condizionale per vedere quanti numeri sono stati indovinati
+            finalMessage.classList.remove(`text-danger`);
+            finalMessage.classList.add(`text-success`);
+            finalMessage.innerHTML = `Hai vinto <br> Hai indovinato ${founded} numeri`
+        } else {
+            finalMessage.classList.add(`text-danger`);
+            finalMessage.classList.remove(`text-success`);
+            finalMessage.innerHTML = `Hai perso <br> Hai indovinato ${founded} numeri`
+        }
+    }  
 })
 
