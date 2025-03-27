@@ -1,6 +1,26 @@
 // Functions
 const randomNumber = () => Math.floor(Math.random() * 50 + 1) // Genera un numero casuale compreso tra 1 e 50
 
+const checkValue = (bool, element, n) =>{ // Funzione che mi stampa il risultato
+    if (bool){ // Se un qualche valore non è valido
+        alert(`Valore inserito non valido!`); // Compare il seguente messaggio
+    } else { // Altrimenti
+        showMessage(element, n); // Richiamo la funzione showMessage
+    }
+}
+
+const showMessage = (element, n) =>{ // Funzione che mi stampa il messaggio di vittoria o sconfitta
+    if (n >= 3){
+        element.classList.remove(`text-danger`);
+        element.classList.add(`text-success`);
+        element.innerHTML = `Hai vinto <br> Hai indovinato ${n} numeri`;
+    } else {
+        element.classList.add(`text-danger`);
+        element.classList.remove(`text-success`);
+        element.innerHTML = `Hai perso <br> Hai indovinato ${n} numeri`
+    }
+}
+
 //Dichiarazione delle varaibili e recupero elementi necessari
 let counter = document.getElementById(`countdown`); // Recupero il countdown e lo assegno alla variabile counter
 let numbersList = document.getElementById(`numbers-list`); // Recupero l'elemento numbers-list e lo assegno a numbersList
@@ -16,6 +36,13 @@ let count = 30; // Creo una variabile contatore che parte da 30
 counter.innerHTML = count // Inserisco il valore di count all'interno dell'elemento
 let numsGenerated = []; // Creo un array dove metto i numeri generati
 
+// Genero i numeri casuali
+for (let i = 0; i < 5; i++){
+    let n = randomNumber(); // Richiamo la funzione e inserisco il valore ritornato nella variabile n
+    numbersList.innerHTML += `<li>${n}</li>`; // Inserisco il numero generato contenuto in un tag <li> nella lista
+    numsGenerated.push(n); // Pusho il numero nell'array
+}
+
 const time = setInterval(function(){ // Creo un intervallo di 1 secondo
     count--; // Effettuo il decremento di count
     counter.innerHTML = count; // Inserisco il nuovo valore di count all'interno dell'elemento
@@ -26,12 +53,7 @@ setTimeout (function(){
     clearInterval(time);
 }, 30 * msPerSecond)
 
-// Genero i numeri casuali
-for (let i = 0; i < 5; i++){
-    let n = randomNumber(); // Richiamo la funzione e inserisco il valore ritornato nella variabile n
-    numbersList.innerHTML += `<li>${n}</li>`; // Inserisco il numero generato contenuto in un tag <li> nella lista
-    numsGenerated.push(n); // Pusho il numero nell'array
-}
+btn.addEventListener(`click`, randomNumber)
 
 // Creo un'altro timeout per nascondere il contatorre, i numeri e nel mentre modifica il testo dell'elemento instructions e mostra il form dove inserire i numeri
 setTimeout(() => { 
@@ -61,18 +83,6 @@ btn.addEventListener(`click`, (e) => {
         }
         
     }
-    if (check){ // Se in valore inserito non è un numero
-        alert(`Valore inserito non valido!`); // Compare il seguente messaggio
-    } else { // Altrimenti
-        if (founded >= 3){ // Blocco condizionale per vedere quanti numeri sono stati indovinati
-            finalMessage.classList.remove(`text-danger`);
-            finalMessage.classList.add(`text-success`);
-            finalMessage.innerHTML = `Hai vinto <br> Hai indovinato ${founded} numeri`
-        } else {
-            finalMessage.classList.add(`text-danger`);
-            finalMessage.classList.remove(`text-success`);
-            finalMessage.innerHTML = `Hai perso <br> Hai indovinato ${founded} numeri`
-        }
-    }  
+    checkValue(check, finalMessage, founded); // Richiamo funzione checkValue
 })
 
